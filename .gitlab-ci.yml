@@ -23,7 +23,7 @@ stages:          # List of stages for jobs, and their order of execution
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
-    - apk add --update build-essential
+    - apk add --update build-base
     - echo "Compiling the code..."
     - go test admin_test.go
 
