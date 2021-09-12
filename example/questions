@@ -1,0 +1,20 @@
+{
+    "title": "Capital of Poland?",
+    "answers": {
+        "a":"Warsaw",
+        "b":"Paris",
+        "c":"Kijów",
+        "d":"Berlin"
+    },
+    "correct_answer": "a"
+},
+{
+    "title": "Best programming language?",
+    "answers": {
+        "a":"Go",
+        "b":"Java",
+        "c":"C#",
+        "d":"Python"
+    },
+    "correct_answer": "a"
+}

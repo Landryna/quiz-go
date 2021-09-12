@@ -1,0 +1,8 @@
+Your score is: {{ .Score }}
+{{ if eq .Score 0 }}
+Well {{ .Username }}. At least it you tried :)
+{{ else if and (gt .Score 0) (lt .Score 3) }}
+Not bad {{ .Username }}!
+{{ else }}
+Good work {{ .Username }}!
+{{end}}
