@@ -1,0 +1,8 @@
+Question is ...
+{{ .Title }}
+Your answers:
+A) - {{ .Answers.A }}
+B) - {{ .Answers.B }}
+C) - {{ .Answers.C }}
+D) - {{ .Answers.D }}
+Type your question (a,b,c,d) and press enter!

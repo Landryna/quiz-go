@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	log "github.com/sirupsen/logrus"
+	"os"
+)
 
 type actorGroup []actor
 type runFunc func() error
@@ -34,34 +37,33 @@ func (*actorGroup) show() actorGroup {
 	return actors
 }
 
-func (*actorGroup) run() {
-	error := make(chan error)
-	//TODO: zastanowic sie czy potrzebuje nazwy aktora
-	actor := make(chan string)
-	//TODO: moze jakies handlowanie panici?
+// run executes all provided actors and waits for first error - then cancels every actor
+func (a *actorGroup) run() {
+	logger := log.New()
+	logger.SetFormatter(&log.JSONFormatter{})
+
+	errorCh := make(chan error)
+	actorCh := make(chan string)
 	for _, a := range actors {
 		a := a
 		go func() {
 			err := a.Run()
-			error <- err
-			actor <- a.Name
+			errorCh <- err
+			actorCh <- a.Name
 		}()
 	}
 
-	for {
-		select {
-		case err := <-error:
-			actor := <-actor
-			fmt.Printf("\nActor %s ended with msg: %s", actor, err.Error())
-		}
-		break
-	}
+	// wait for first error
+	err := <-errorCh
+	actor := <-actorCh
+	logger.Errorf("actor %s: %v", actor, err)
 
 	for _, a := range actors {
 		a := a
 		err := a.Cancel()
 		if err != nil {
-			fmt.Printf("unable to cancel actor: %s", a.Name)
+			logger.Errorf("actor cancel %s: %v", actor, err)
+			os.Exit(1)
 		}
 	}
 }
